@@ -23,7 +23,42 @@ class ToDoListViewController: UIViewController {
         
     }
 
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "ShowDetail" {
+            let destination = segue.destination as! ToDoDetailTableViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow!
+            
+            destination.todoItem = toDoArray[selectedIndexPath.row]
+        }
+        else {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                tableView.deselectRow(at: selectedIndexPath, animated: true)
+                
+            }
+            
+            
+        }
+        
+    }
+    
+    @IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
+        let source = segue.source as! ToDoDetailTableViewController
+        
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            toDoArray[selectedIndexPath.row] = source.todoItem
+            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+        } else {
+            let newIndexPath = IndexPath(row: toDoArray.count, section: 0)
+            toDoArray.append(source.todoItem)
+            tableView.insertRows(at: [newIndexPath], with: .bottom)
+            tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
+        }
+        
+    }
+    
+    
 }
 
 extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {

@@ -14,17 +14,30 @@ class ToDoDetailTableViewController: UITableViewController {
     
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
     
-    @IBOutlet weak var todoListText: UITextField!
+    @IBOutlet weak var nameField: UITextField!
     
     @IBOutlet weak var todoDatePicker: UIDatePicker!
     
     @IBOutlet weak var todoNotes: UITextView!
     
+    var todoItem: String!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if todoItem == nil {
+            todoItem = ""
+        }
+        
+        nameField.text = todoItem
+        
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        todoItem = nameField.text
+    }
+    
     
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         let isPresentinginAddMode = presentingViewController is UINavigationController

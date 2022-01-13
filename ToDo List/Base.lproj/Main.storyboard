@@ -142,18 +142,20 @@
                         <barButtonItem key="rightBarButtonItem" title="Save" id="4L7-E3-wMv">
                             <connections>
                                 <action selector="saveButtonPressed:" destination="YLj-MV-obb" id="pEg-DU-u6R"/>
+                                <segue destination="zIw-hh-xFQ" kind="unwind" unwindAction="unwindFromDetailWithSegue:" id="TQ7-5K-w8H"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="cancelBarButton" destination="7qJ-wT-bLd" id="Oea-GA-shI"/>
+                        <outlet property="nameField" destination="TSz-53-yzR" id="DJB-aH-b7v"/>
                         <outlet property="saveBarButton" destination="4L7-E3-wMv" id="UEg-pG-1BM"/>
                         <outlet property="todoDatePicker" destination="AIp-by-95T" id="nHH-QL-oI2"/>
-                        <outlet property="todoListText" destination="TSz-53-yzR" id="DJB-aH-b7v"/>
                         <outlet property="todoNotes" destination="6ZT-mM-gr7" id="Rux-ek-bgj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1SZ-XQ-UMB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="zIw-hh-xFQ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3084.375" y="115.14084507042254"/>
         </scene>
