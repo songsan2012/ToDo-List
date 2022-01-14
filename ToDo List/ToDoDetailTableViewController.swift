@@ -20,22 +20,27 @@ class ToDoDetailTableViewController: UITableViewController {
     
     @IBOutlet weak var todoNotes: UITextView!
     
-    var todoItem: String!
-    
+//    var todoItem: String!
+    var todoItem: ToDoItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         if todoItem == nil {
-            todoItem = ""
+            //            todoItem = ""
+            todoItem = ToDoItem(name: "", date: Date(), notes: "")
         }
         
-        nameField.text = todoItem
+        //        nameField.text = todoItem
+        nameField.text = todoItem.name
+        todoDatePicker.date = todoItem.date
+        todoNotes.text = todoItem.notes
         
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        todoItem = nameField.text
+//        todoItem = nameField.text
+        todoItem = ToDoItem(name: nameField.text!, date: todoDatePicker.date, notes: todoNotes.text)
     }
     
     

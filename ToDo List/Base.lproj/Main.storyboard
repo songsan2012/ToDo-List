@@ -43,6 +43,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="6i5-HM-rct">
+                        <barButtonItem key="leftBarButtonItem" title="Edit" id="abC-AC-UlA">
+                            <connections>
+                                <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="nIV-FK-dsR"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="lCe-r1-505">
                             <connections>
                                 <segue destination="oUL-3C-DJg" kind="presentation" identifier="AddDetail" id="j9I-Kk-ryZ"/>
@@ -50,6 +55,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="AddBarButton" destination="lCe-r1-505" id="rW8-bh-N4S"/>
+                        <outlet property="EditBarButton" destination="abC-AC-UlA" id="92b-uj-wSc"/>
                         <outlet property="tableView" destination="Ru1-nD-cu2" id="fD9-pL-iiJ"/>
                     </connections>
                 </viewController>
@@ -86,10 +93,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="" id="1zp-Dx-4y5">
+                            <tableViewSection headerTitle="reminder set" id="1zp-Dx-4y5">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="sFr-3g-fKk">
-                                        <rect key="frame" x="0.0" y="139" width="320" height="200"/>
+                                        <rect key="frame" x="0.0" y="155" width="320" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sFr-3g-fKk" id="Ytl-JR-4LN">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
@@ -107,7 +114,7 @@
                             <tableViewSection headerTitle="Notes" id="LQl-pU-YUu">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="VVl-TV-lFo">
-                                        <rect key="frame" x="0.0" y="395" width="320" height="200"/>
+                                        <rect key="frame" x="0.0" y="411" width="320" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VVl-TV-lFo" id="73u-4d-Ano">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
