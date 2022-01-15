@@ -8,26 +8,26 @@
 
 import UIKit
 
+private let dateFormatter: DateFormatter = {
+    print("📆 I JUST CREATED A DATE FORMATTER!")
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .short
+    dateFormatter.timeStyle = .short
+    return dateFormatter
+}()
+
 class ToDoDetailTableViewController: UITableViewController {
 
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var nameField: UITextField!
-    
     @IBOutlet weak var todoDatePicker: UIDatePicker!
-    
     @IBOutlet weak var todoNotes: UITextView!
     
-    
     @IBOutlet weak var reminderSwitch: UISwitch!
-    
     @IBOutlet weak var dateLabel: UILabel!
     
-    
-    
-//    var todoItem: String!
+
     var todoItem: ToDoItem!
     
     let datePickerIndexPath = IndexPath(row: 1, section: 1)
@@ -98,7 +98,18 @@ class ToDoDetailTableViewController: UITableViewController {
          else {
              dateLabel.textColor = .gray
          }
+        
+        dateLabel.text = dateFormatter.string(from: todoItem.date)
      }
+    
+    
+    
+    @IBAction func datePickerChanged(_ sender: UIDatePicker) {
+        dateLabel.text = dateFormatter.string(from: sender.date)
+        
+        
+    }
+    
     
 }
 
