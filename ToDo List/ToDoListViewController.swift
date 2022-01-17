@@ -18,7 +18,9 @@ class ToDoListViewController: UIViewController {
     
 //    var toDoArray = ["Learn Swift", "Publish App", "Change the world", "Take a vacation"]
     
-    var toDoItems: [ToDoItem] = []
+//    var toDoItems: [ToDoItem] = []
+    var toDoItems = ToDoItems()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +29,12 @@ class ToDoListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        LoadData()
+//        LoadData()
+//        toDoItems.loadData()
+        toDoItems.loadData {
+            self.tableView.reloadData()
+        }
+        
         authorizeLocalNotification()
     }
 
@@ -57,7 +64,7 @@ class ToDoListViewController: UIViewController {
     
         func setNotifications() {
             
-            guard toDoItems.count > 0 else {
+            guard toDoItems.itemsArray.count > 0 else {
                 return
             }
             
@@ -65,11 +72,11 @@ class ToDoListViewController: UIViewController {
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             
             // -- Loop to update data
-            for index in 0..<toDoItems.count {
-                if toDoItems[index].reminderSet {
-                    let toDoItem = toDoItems[index]
+            for index in 0..<toDoItems.itemsArray.count {
+                if toDoItems.itemsArray[index].reminderSet {
+                    let toDoItem = toDoItems.itemsArray[index]
                     
-                    toDoItems[index].notificationID = setCalendarNotification(title: toDoItem.name, subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
+                    toDoItems.itemsArray[index].notificationID = setCalendarNotification(title: toDoItem.name, subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
                 }
             }
             
@@ -115,42 +122,44 @@ class ToDoListViewController: UIViewController {
     
     
     // -- To Load Data to iOS - Start
-        func LoadData() {
-             let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-             let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
-             
-            guard let data = try? Data(contentsOf: documentURL) else { return }
-            
-            let jsonDecoder = JSONDecoder()
-            
-            do {
-                toDoItems = try jsonDecoder.decode(Array<ToDoItem>.self, from: data)
-                tableView.reloadData()
-            }  catch {
-                print("😡 ERROR: Could not LOAD data \(error.localizedDescription)")
-            }
-            
-        }
+//        func LoadData() {
+//             let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//             let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+//
+//            guard let data = try? Data(contentsOf: documentURL) else { return }
+//
+//            let jsonDecoder = JSONDecoder()
+//
+//            do {
+//                toDoItems = try jsonDecoder.decode(Array<ToDoItem>.self, from: data)
+//                tableView.reloadData()
+//            }  catch {
+//                print("😡 ERROR: Could not LOAD data \(error.localizedDescription)")
+//            }
+//
+//        }
     
     // -- To Load Data to iOS - End
     
     
     // -- To Save Data to iOS - Start
         func saveData() {
-            let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
-            
-            let jsonEncoder = JSONEncoder()
-            let data = try? jsonEncoder.encode(toDoItems)
-            
-            do {
-                try data?.write(to: documentURL, options: .noFileProtection)
-            } catch {
-                print("😡 ERROR: Could not SAVE data \(error.localizedDescription)")
-            }
+//            let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//            let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+//            
+//            let jsonEncoder = JSONEncoder()
+//            let data = try? jsonEncoder.encode(toDoItems)
+//            
+//            do {
+//                try data?.write(to: documentURL, options: .noFileProtection)
+//            } catch {
+//                print("😡 ERROR: Could not SAVE data \(error.localizedDescription)")
+//            }
             
 //            let toDoItem = toDoItems.first!
 //            let notificationID = setCalendarNotification(title: toDoItem.name, subtitle: "Subtitle would go here", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
+            
+            toDoItems.saveData()
             
             setNotifications()
             
@@ -165,7 +174,7 @@ class ToDoListViewController: UIViewController {
             let selectedIndexPath = tableView.indexPathForSelectedRow!
             
 //            destination.todoItem = toDoArray[selectedIndexPath.row]
-            destination.todoItem = toDoItems[selectedIndexPath.row]
+            destination.todoItem = toDoItems.itemsArray[selectedIndexPath.row]
         }
         else {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -183,11 +192,11 @@ class ToDoListViewController: UIViewController {
             let source = segue.source as! ToDoDetailTableViewController
             
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                toDoItems[selectedIndexPath.row] = source.todoItem
+                toDoItems.itemsArray[selectedIndexPath.row] = source.todoItem
                 tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
             } else {
-                let newIndexPath = IndexPath(row: toDoItems.count, section: 0)
-                toDoItems.append(source.todoItem)
+                let newIndexPath = IndexPath(row: toDoItems.itemsArray.count, section: 0)
+                toDoItems.itemsArray.append(source.todoItem)
                 tableView.insertRows(at: [newIndexPath], with: .bottom)
                 tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
             }
@@ -224,7 +233,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, Li
     
     func checkBoxToggle(sender: ListTableViewCell) {
         if let selectedIndexPath = tableView.indexPath(for: sender) {
-            toDoItems[selectedIndexPath.row].completed = !toDoItems[selectedIndexPath.row].completed
+            toDoItems.itemsArray[selectedIndexPath.row].completed = !toDoItems.itemsArray[selectedIndexPath.row].completed
             tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
             
             saveData()
@@ -233,7 +242,8 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, Li
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toDoItems.count
+//        return toDoItems.count
+        return toDoItems.itemsArray.count
     }
     
     
@@ -245,7 +255,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, Li
         
 //        cell.nameLabel.text = toDoItems[indexPath.row].name
 //        cell.checkboxButton.isSelected =  toDoItems[indexPath.row].completed
-        cell.toDoItem = toDoItems[indexPath.row]
+        cell.toDoItem = toDoItems.itemsArray[indexPath.row]
 
         return cell
     }
@@ -254,7 +264,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, Li
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             
             if editingStyle == .delete {
-                toDoItems.remove(at: indexPath.row)
+                toDoItems.itemsArray.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 saveData()
             }
@@ -266,9 +276,9 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, Li
     // -- Move row functionality - Start
         func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
             
-            let itemToMove = toDoItems[sourceIndexPath.row]
-            toDoItems.remove(at: sourceIndexPath.row)
-            toDoItems.insert(itemToMove, at: destinationIndexPath.row)
+            let itemToMove = toDoItems.itemsArray[sourceIndexPath.row]
+            toDoItems.itemsArray.remove(at: sourceIndexPath.row)
+            toDoItems.itemsArray.insert(itemToMove, at: destinationIndexPath.row)
             saveData()
         }
     
