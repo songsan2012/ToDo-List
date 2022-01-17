@@ -209,11 +209,11 @@
                     <connections>
                         <outlet property="cancelBarButton" destination="7qJ-wT-bLd" id="Oea-GA-shI"/>
                         <outlet property="dateLabel" destination="SWi-EO-lFt" id="SWX-q4-5qk"/>
+                        <outlet property="datePicker" destination="OsY-Mj-aUR" id="Cxf-eb-pce"/>
                         <outlet property="nameField" destination="TSz-53-yzR" id="DJB-aH-b7v"/>
+                        <outlet property="noteView" destination="6ZT-mM-gr7" id="Rux-ek-bgj"/>
                         <outlet property="reminderSwitch" destination="J4g-F4-K5k" id="pgI-aL-c1Z"/>
                         <outlet property="saveBarButton" destination="4L7-E3-wMv" id="UEg-pG-1BM"/>
-                        <outlet property="todoDatePicker" destination="OsY-Mj-aUR" id="Cxf-eb-pce"/>
-                        <outlet property="todoNotes" destination="6ZT-mM-gr7" id="Rux-ek-bgj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1SZ-XQ-UMB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

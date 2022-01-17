@@ -21,8 +21,8 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
     @IBOutlet weak var nameField: UITextField!
-    @IBOutlet weak var todoDatePicker: UIDatePicker!
-    @IBOutlet weak var todoNotes: UITextView!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var noteView: UITextView!
     
     @IBOutlet weak var reminderSwitch: UISwitch!
     @IBOutlet weak var dateLabel: UILabel!
@@ -32,7 +32,6 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     
     let datePickerIndexPath = IndexPath(row: 1, section: 1)
     let notesTextViewIndexPath = IndexPath(row: 0, section: 2)
-    
     let notesRowHeight: CGFloat = 200
     let defaultRowHeight: CGFloat = 44
     
@@ -54,11 +53,28 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         
         updateUserInterface()
     }
+    
+    func updateUserInterface() {
+         nameField.text = todoItem.name
+         datePicker.date = todoItem.date
+         noteView.text = todoItem.notes
+         reminderSwitch.isOn = todoItem.reminderSet
+         
+         if reminderSwitch.isOn {
+             dateLabel.textColor = .black
+         }
+         else {
+             dateLabel.textColor = .gray
+         }
+        
+        dateLabel.text = dateFormatter.string(from: todoItem.date)
+        enableDisableSaveButton(text: nameField.text!)
+     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        todoItem = nameField.text
 //        todoItem = ToDoItem(name: nameField.text!, date: todoDatePicker.date, notes: todoNotes.text)
-        todoItem = ToDoItem(name: nameField.text!, date: todoDatePicker.date, notes: todoNotes.text, reminderSet: reminderSwitch.isOn, completed: todoItem.completed)
+        todoItem = ToDoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn, completed: todoItem.completed)
     }
     
     
@@ -107,28 +123,15 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     
     func enableDisableSaveButton(text: String) {
         if text.count > 0 {
+            print("HIT IF Save Button. Count is \(text.count).")
             saveBarButton.isEnabled = true
         } else {
+            print("HIT ELSE Save Button. Count is \(text.count).")
             saveBarButton.isEnabled = false
         }
     }
     
-    func updateUserInterface() {
-         nameField.text = todoItem.name
-         todoDatePicker.date = todoItem.date
-         todoNotes.text = todoItem.notes
-         reminderSwitch.isOn = todoItem.reminderSet
-         
-         if reminderSwitch.isOn {
-             dateLabel.textColor = .black
-         }
-         else {
-             dateLabel.textColor = .gray
-         }
-        
-        dateLabel.text = dateFormatter.string(from: todoItem.date)
-        enableDisableSaveButton(text: nameField.text!)
-     }
+
     
     
 }
@@ -138,7 +141,7 @@ extension ToDoDetailTableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {
         case datePickerIndexPath:
-            return reminderSwitch.isOn ? todoDatePicker.frame.height : 0
+            return reminderSwitch.isOn ? datePicker.frame.height : 0
         case notesTextViewIndexPath:
             return notesRowHeight
         default:
@@ -149,7 +152,7 @@ extension ToDoDetailTableViewController {
 
 extension ToDoDetailTableViewController: UITextViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField)  -> Bool {
-        todoNotes.becomeFirstResponder()
+        noteView.becomeFirstResponder()
         return true
     }
 }

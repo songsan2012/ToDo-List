@@ -15,11 +15,11 @@ protocol ListTableViewCellDelegate: class {
 }
 
 class ListTableViewCell: UITableViewCell {
-
-    weak var delegate: ListTableViewCellDelegate?
     
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
+    
+    weak var delegate: ListTableViewCellDelegate?
     
     var toDoItem: ToDoItem! {
         didSet {
