@@ -38,6 +38,10 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // setup foreground notification
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
+        
         // -- Hide the keyboard if we tap outside of a view
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         tap.cancelsTouchesInView = false
@@ -53,6 +57,12 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         
         updateUserInterface()
     }
+    
+    @objc func appActiveNotification() {
+        print("😎 The app just came to the foreground!")
+        updateReminderSwitch()
+    }
+    
     
     func updateUserInterface() {
          nameField.text = todoItem.name
@@ -151,10 +161,10 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     
     func enableDisableSaveButton(text: String) {
         if text.count > 0 {
-            print("HIT IF Save Button. Count is \(text.count).")
+//            print("HIT IF Save Button. Count is \(text.count).")
             saveBarButton.isEnabled = true
         } else {
-            print("HIT ELSE Save Button. Count is \(text.count).")
+//            print("HIT ELSE Save Button. Count is \(text.count).")
             saveBarButton.isEnabled = false
         }
     }
