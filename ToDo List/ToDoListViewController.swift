@@ -35,134 +35,18 @@ class ToDoListViewController: UIViewController {
             self.tableView.reloadData()
         }
         
-        authorizeLocalNotification()
-    }
-
-    func authorizeLocalNotification() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-            // -- If there is an error, kick out and handle error
-            guard error == nil else {
-                print("😡 ERROR: \(error!.localizedDescription)")
-                return
-            }
-            
-            // -- If granted
-            if granted {
-                print("✅ Notifications Authorization Granted!")
-                // TODO: Look into what else to do when authorized.
-            }
-            else {
-                print("🚫 The user has denied notifications!")
-                
-                //TODO: Put an alert in here telling the user what to do
-                
-            }
-            
-            
-        }
+//        authorizeLocalNotification()
+        LocalNotificationManager.authorizeLocalNotification()
+        
     }
     
-        func setNotifications() {
-            
-            guard toDoItems.itemsArray.count > 0 else {
-                return
-            }
-            
-            // remove all notifications
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            
-            // -- Loop to update data
-            for index in 0..<toDoItems.itemsArray.count {
-                if toDoItems.itemsArray[index].reminderSet {
-                    let toDoItem = toDoItems.itemsArray[index]
-                    
-                    toDoItems.itemsArray[index].notificationID = setCalendarNotification(title: toDoItem.name, subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
-                }
-            }
-            
-            
-        }
-    
-    
-        func setCalendarNotification(title: String, subtitle: String, body: String, badgeNumber: NSNumber?, sound: UNNotificationSound, date: Date) -> String {
-            
-            // -- Create Content:
-            let content = UNMutableNotificationContent()
-            content.title = title
-            content.subtitle = subtitle
-            content.body = body
-            content.sound = sound
-            content.badge = badgeNumber
-            
-            // -- Create trigger
-            var dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-            dateComponents.second = 00
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-            
-            
-            // -- Create request
-            let notificationID = UUID().uuidString
-            let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
-            
-            // -- Register request with the notification center
-            UNUserNotificationCenter.current().add(request) { (error) in
-                if let error = error {
-                    print("😡 ERROR: \(error.localizedDescription) Yikes, adding notification request went wrong!")
-                }
-                else {
-                    print("Notification schedule \(notificationID), title: \(content.title)")
-                }
-            }
-            
-            return notificationID
-            
-        }
-    
-    
-    
-    // -- To Load Data to iOS - Start
-//        func LoadData() {
-//             let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//             let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
-//
-//            guard let data = try? Data(contentsOf: documentURL) else { return }
-//
-//            let jsonDecoder = JSONDecoder()
-//
-//            do {
-//                toDoItems = try jsonDecoder.decode(Array<ToDoItem>.self, from: data)
-//                tableView.reloadData()
-//            }  catch {
-//                print("😡 ERROR: Could not LOAD data \(error.localizedDescription)")
-//            }
-//
-//        }
-    
-    // -- To Load Data to iOS - End
     
     
     // -- To Save Data to iOS - Start
         func saveData() {
-//            let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//            let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
-//            
-//            let jsonEncoder = JSONEncoder()
-//            let data = try? jsonEncoder.encode(toDoItems)
-//            
-//            do {
-//                try data?.write(to: documentURL, options: .noFileProtection)
-//            } catch {
-//                print("😡 ERROR: Could not SAVE data \(error.localizedDescription)")
-//            }
-            
-//            let toDoItem = toDoItems.first!
-//            let notificationID = setCalendarNotification(title: toDoItem.name, subtitle: "Subtitle would go here", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
-            
             toDoItems.saveData()
             
-            setNotifications()
-            
+//            setNotifications()
         }
     // -- To Save Data to iOS - End
     
