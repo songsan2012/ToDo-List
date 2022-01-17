@@ -29,15 +29,11 @@ class ToDoListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-//        LoadData()
-//        toDoItems.loadData()
         toDoItems.loadData {
             self.tableView.reloadData()
         }
         
-//        authorizeLocalNotification()
-        LocalNotificationManager.authorizeLocalNotification()
-        
+        LocalNotificationManager.authorizeLocalNotification(viewController: self)
     }
     
     

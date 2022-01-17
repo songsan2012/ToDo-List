@@ -8,10 +8,12 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 
 struct LocalNotificationManager {
     
-    static func authorizeLocalNotification() {
+    
+    static func authorizeLocalNotification(viewController: UIViewController) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             // -- If there is an error, kick out and handle error
             guard error == nil else {
@@ -27,13 +29,41 @@ struct LocalNotificationManager {
             else {
                 print("🚫 The user has denied notifications!")
                 
-                //TODO: Put an alert in here telling the user what to do
-                
+                DispatchQueue.main.async {
+                    
+                    viewController.oneButtonAlert(title: "User Has Not Allowed Notifications", message: "To receive alerts for reminders, open the Settings app, select To Do List > Notifications > Allow Notifications.")
+                }
             }
-            
-            
         }
     }
+    
+    
+    static func isAuthorized(completed: @escaping (Bool) -> ()) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            // -- If there is an error, kick out and handle error
+            guard error == nil else {
+                print("😡 ERROR: \(error!.localizedDescription)")
+                completed(false)
+                return
+            }
+            
+            // -- If granted
+            if granted {
+                print("✅ Notifications Authorization Granted!")
+                completed(true)
+                // TODO: Look into what else to do when authorized.
+            }
+            else {
+                print("🚫 The user has denied notifications!")
+                completed(false)
+//                DispatchQueue.main.async {
+//
+//                    viewController.oneButtonAlert(title: "User Has Not Allowed Notifications", message: "To receive alerts for reminders, open the Settings app, select To Do List > Notifications > Allow Notifications.")
+//                }
+            }
+        }
+    }
+    
     
     static func setCalendarNotification(title: String, subtitle: String, body: String, badgeNumber: NSNumber?, sound: UNNotificationSound, date: Date) -> String {
         
@@ -63,6 +93,8 @@ struct LocalNotificationManager {
             }
             else {
                 print("Notification schedule \(notificationID), title: \(content.title)")
+                
+                // FIXME: Need to do something with this
             }
         }
         

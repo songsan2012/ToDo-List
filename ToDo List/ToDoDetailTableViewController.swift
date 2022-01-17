@@ -69,7 +69,35 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         
         dateLabel.text = dateFormatter.string(from: todoItem.date)
         enableDisableSaveButton(text: nameField.text!)
+        updateReminderSwitch()
      }
+    
+    func updateReminderSwitch() {
+        LocalNotificationManager.isAuthorized { (authorized) in
+            DispatchQueue.main.async {
+                if !authorized && self.reminderSwitch.isOn {
+                    self.oneButtonAlert(title: "User Has Not Allowed Notifications", message: "To receive alerts for reminders, open the Settings app, select To Do List > Notifications > Allow Notifications.")
+                    self.reminderSwitch.isOn = false
+                }
+                
+                self.view.endEditing(true)
+                if self.reminderSwitch.isOn {
+                    self.dateLabel.textColor = .black
+                }
+                else {
+                    self.dateLabel.textColor = .gray
+                }
+                
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+                
+            }
+                
+        
+        
+        }
+    }
+    
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        todoItem = nameField.text
@@ -98,16 +126,16 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     
     
     @IBAction func reminderSwitchChanged(_ sender: UISwitch) {
-        self.view.endEditing(true)
-        if reminderSwitch.isOn {
-            dateLabel.textColor = .black
-        }
-        else {
-            dateLabel.textColor = .gray
-        }
-        
-        tableView.beginUpdates()
-        tableView.endUpdates()
+//        self.view.endEditing(true)
+//        if reminderSwitch.isOn {
+//            dateLabel.textColor = .black
+//        }
+//        else {
+//            dateLabel.textColor = .gray
+//        }
+//
+//        tableView.beginUpdates()
+//        tableView.endUpdates()
     }
     
     @IBAction func datePickerChanged(_ sender: UIDatePicker) {
