@@ -220,21 +220,33 @@ class ToDoListViewController: UIViewController {
     
 }
 
-extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
+extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource, ListTableViewCellDelegate {
+    
+    func checkBoxToggle(sender: ListTableViewCell) {
+        if let selectedIndexPath = tableView.indexPath(for: sender) {
+            toDoItems[selectedIndexPath.row].completed = !toDoItems[selectedIndexPath.row].completed
+            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
+            
+            saveData()
+        }
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        print("🤭 Number of rows in section: \(toDoItems.count)")
-        
-        //        return toDoArray.count
         return toDoItems.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = toDoItems[indexPath.row].name
-        print("Cell at rowpath just called at \(cell)")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ListTableViewCell
+        cell.delegate = self
+//        cell.textLabel?.text = toDoItems[indexPath.row].name
+        
+//        cell.nameLabel.text = toDoItems[indexPath.row].name
+//        cell.checkboxButton.isSelected =  toDoItems[indexPath.row].completed
+        cell.toDoItem = toDoItems[indexPath.row]
+
         return cell
     }
     
