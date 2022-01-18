@@ -12,7 +12,6 @@ import UserNotifications
 class ToDoListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var AddBarButton: UIBarButtonItem!
     @IBOutlet weak var EditBarButton: UIBarButtonItem!
     

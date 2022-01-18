@@ -12,6 +12,20 @@ import UserNotifications
 class ToDoItems {
     var itemsArray: [ToDoItem] = []
     
+    func loadData(completed: @escaping ()->() ) {
+         let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+         let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
+
+        guard let data = try? Data(contentsOf: documentURL) else { return }
+        let jsonDecoder = JSONDecoder()
+        do {
+            itemsArray = try jsonDecoder.decode(Array<ToDoItem>.self, from: data)
+        }  catch {
+            print("😡 ERROR: Could not LOAD data \(error.localizedDescription)")
+        }
+        completed()
+    }
+    
     func saveData() {
         let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
@@ -30,22 +44,7 @@ class ToDoItems {
         
     }
     
-    func loadData(completed: @escaping ()->() ) {
-         let directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-         let documentURL = directoryURL.appendingPathComponent("todos").appendingPathExtension("json")
-
-        guard let data = try? Data(contentsOf: documentURL) else { return }
-
-        let jsonDecoder = JSONDecoder()
-
-        do {
-            itemsArray = try jsonDecoder.decode(Array<ToDoItem>.self, from: data)
-//            tableView.reloadData()
-        }  catch {
-            print("😡 ERROR: Could not LOAD data \(error.localizedDescription)")
-        }
-        completed()
-    }
+    
     
     func setNotifications() {
         
@@ -60,15 +59,8 @@ class ToDoItems {
         for index in 0..<itemsArray.count {
             if itemsArray[index].reminderSet {
                 let toDoItem = itemsArray[index]
-                
-//                    toDoItems.itemsArray[index].notificationID = setCalendarNotification(title: toDoItem.name, subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
-                
                 itemsArray[index].notificationID = LocalNotificationManager.setCalendarNotification(title: toDoItem.name, subtitle: "", body: toDoItem.notes, badgeNumber: nil, sound: .default, date: toDoItem.date)
-                
             }
         }
-        
-        
     }
-    
 }

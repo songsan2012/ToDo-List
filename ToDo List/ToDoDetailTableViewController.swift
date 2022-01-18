@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 private let dateFormatter: DateFormatter = {
     print("📆 I JUST CREATED A DATE FORMATTER!")
@@ -23,7 +24,6 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var noteView: UITextView!
-    
     @IBOutlet weak var reminderSwitch: UISwitch!
     @IBOutlet weak var dateLabel: UILabel!
     
@@ -98,6 +98,7 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
                     self.dateLabel.textColor = .gray
                 }
                 
+                self.datePicker.isEnabled = self.reminderSwitch.isOn
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
                 
@@ -115,6 +116,15 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         todoItem = ToDoItem(name: nameField.text!, date: datePicker.date, notes: noteView.text, reminderSet: reminderSwitch.isOn, completed: todoItem.completed)
     }
     
+    func enableDisableSaveButton(text: String) {
+        if text.count > 0 {
+//            print("HIT IF Save Button. Count is \(text.count).")
+            saveBarButton.isEnabled = true
+        } else {
+//            print("HIT ELSE Save Button. Count is \(text.count).")
+            saveBarButton.isEnabled = false
+        }
+    }
     
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
         let isPresentinginAddMode = presentingViewController is UINavigationController
@@ -128,6 +138,7 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         
     }
     
+
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
     
@@ -136,16 +147,7 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     
     
     @IBAction func reminderSwitchChanged(_ sender: UISwitch) {
-//        self.view.endEditing(true)
-//        if reminderSwitch.isOn {
-//            dateLabel.textColor = .black
-//        }
-//        else {
-//            dateLabel.textColor = .gray
-//        }
-//
-//        tableView.beginUpdates()
-//        tableView.endUpdates()
+        updateReminderSwitch()
     }
     
     @IBAction func datePickerChanged(_ sender: UIDatePicker) {
@@ -159,15 +161,7 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         
     }
     
-    func enableDisableSaveButton(text: String) {
-        if text.count > 0 {
-//            print("HIT IF Save Button. Count is \(text.count).")
-            saveBarButton.isEnabled = true
-        } else {
-//            print("HIT ELSE Save Button. Count is \(text.count).")
-            saveBarButton.isEnabled = false
-        }
-    }
+
     
 
     

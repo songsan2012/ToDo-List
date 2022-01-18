@@ -6,9 +6,9 @@
 //  Copyright © 2022 song. All rights reserved.
 //
 
-import Foundation
-import UserNotifications
 import UIKit
+import UserNotifications
+
 
 struct LocalNotificationManager {
     
@@ -30,7 +30,6 @@ struct LocalNotificationManager {
                 print("🚫 The user has denied notifications!")
                 
                 DispatchQueue.main.async {
-                    
                     viewController.oneButtonAlert(title: "User Has Not Allowed Notifications", message: "To receive alerts for reminders, open the Settings app, select To Do List > Notifications > Allow Notifications.")
                 }
             }

@@ -31,7 +31,6 @@ class ListTableViewCell: UITableViewCell {
     
     
     @IBAction func checkToggle(_ sender: UIButton) {
-        
         delegate?.checkBoxToggle(sender: self)
     }
     
