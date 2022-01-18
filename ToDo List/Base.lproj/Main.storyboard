@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--To Do List View Controller-->
+        <!--To Do List-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ToDoListViewController" customModule="ToDo_List" customModuleProvider="target" sceneMemberID="viewController">
@@ -67,7 +67,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ru1-nD-cu2" secondAttribute="trailing" id="vl8-7W-48X"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="6i5-HM-rct">
+                    <navigationItem key="navigationItem" title="To Do List" largeTitleDisplayMode="always" id="6i5-HM-rct">
                         <barButtonItem key="leftBarButtonItem" title="Edit" id="abC-AC-UlA">
                             <connections>
                                 <action selector="editButtonPressed:" destination="BYZ-38-t0r" id="nIV-FK-dsR"/>
@@ -101,7 +101,7 @@
                             <tableViewSection headerTitle="To Do List" id="CBx-dd-6e8">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="mjI-Fe-0EM">
-                                        <rect key="frame" x="0.0" y="32" width="320" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="320" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mjI-Fe-0EM" id="bhE-AN-64y">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -113,7 +113,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
-                                                        <action selector="textFieldEditingChanged:" destination="YLj-MV-obb" eventType="editingDidEnd" id="87A-WV-mxK"/>
+                                                        <action selector="textFieldEditingChanged:" destination="YLj-MV-obb" eventType="editingChanged" id="Sp9-ih-vba"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -124,7 +124,7 @@
                             <tableViewSection headerTitle="reminder set" id="1zp-Dx-4y5">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="44" id="sFr-3g-fKk">
-                                        <rect key="frame" x="0.0" y="125.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="143" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sFr-3g-fKk" id="Ytl-JR-4LN">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -137,18 +137,33 @@
                                                         <action selector="reminderSwitchChanged:" destination="YLj-MV-obb" eventType="valueChanged" id="kf1-6q-jwS"/>
                                                     </connections>
                                                 </switch>
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="EAc-eZ-O4G">
+                                                    <rect key="frame" x="102" y="0.0" width="202" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="202" id="MOt-UX-Pn3"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <action selector="datePickerChanged:" destination="YLj-MV-obb" eventType="valueChanged" id="Tqb-Td-31W"/>
+                                                    </connections>
+                                                </datePicker>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12/12/12, 12:12:12 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SWi-EO-lFt">
                                                     <rect key="frame" x="109" y="12" width="202" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="EAc-eZ-O4G" secondAttribute="trailing" constant="16" id="FWB-jR-WVa"/>
+                                                <constraint firstItem="EAc-eZ-O4G" firstAttribute="top" secondItem="Ytl-JR-4LN" secondAttribute="top" id="JUq-c4-xpS"/>
+                                                <constraint firstAttribute="bottom" secondItem="EAc-eZ-O4G" secondAttribute="bottom" id="KvS-fv-vYo"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="O3e-DQ-w5w">
-                                        <rect key="frame" x="0.0" y="169.5" width="320" height="200"/>
+                                        <rect key="frame" x="0.0" y="187" width="320" height="200"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O3e-DQ-w5w" id="P31-IC-RRf">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
@@ -169,7 +184,7 @@
                             <tableViewSection headerTitle="Notes" id="LQl-pU-YUu">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="VVl-TV-lFo">
-                                        <rect key="frame" x="0.0" y="419" width="320" height="200"/>
+                                        <rect key="frame" x="0.0" y="437" width="320" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VVl-TV-lFo" id="73u-4d-Ano">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
@@ -195,7 +210,7 @@
                             <outlet property="delegate" destination="YLj-MV-obb" id="Tis-fL-dpb"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="rSu-xL-zCa">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="rSu-xL-zCa">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="7qJ-wT-bLd">
                             <connections>
                                 <action selector="cancelButtonPressed:" destination="YLj-MV-obb" id="TLJ-Oe-0pm"/>
@@ -210,6 +225,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="cancelBarButton" destination="7qJ-wT-bLd" id="Oea-GA-shI"/>
+                        <outlet property="compactDatePicker" destination="EAc-eZ-O4G" id="qcO-op-Cv6"/>
                         <outlet property="dateLabel" destination="SWi-EO-lFt" id="SWX-q4-5qk"/>
                         <outlet property="datePicker" destination="OsY-Mj-aUR" id="Cxf-eb-pce"/>
                         <outlet property="nameField" destination="TSz-53-yzR" id="DJB-aH-b7v"/>

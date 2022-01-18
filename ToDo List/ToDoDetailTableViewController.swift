@@ -27,7 +27,8 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     @IBOutlet weak var reminderSwitch: UISwitch!
     @IBOutlet weak var dateLabel: UILabel!
     
-
+    @IBOutlet weak var compactDatePicker: UIDatePicker!
+    
     var todoItem: ToDoItem!
     
     let datePickerIndexPath = IndexPath(row: 1, section: 1)
@@ -38,6 +39,18 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Check version of iOS
+        if #available(iOS 14.0, *) { // -- Use Compact Version
+            datePicker = compactDatePicker
+            datePicker.isHidden = false
+            dateLabel.isHidden = true
+        } else {  // -- Use the Wheel version
+            
+            compactDatePicker.isHidden = true
+            dateLabel.isHidden = false
+        }
+        
+        
         // setup foreground notification
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -54,7 +67,6 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
             nameField.becomeFirstResponder()
         }
         
-        
         updateUserInterface()
     }
     
@@ -69,7 +81,8 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
          datePicker.date = todoItem.date
          noteView.text = todoItem.notes
          reminderSwitch.isOn = todoItem.reminderSet
-         
+         datePicker.isEnabled = reminderSwitch.isOn
+        
          if reminderSwitch.isOn {
              dateLabel.textColor = .black
          }
@@ -101,11 +114,7 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
                 self.datePicker.isEnabled = self.reminderSwitch.isOn
                 self.tableView.beginUpdates()
                 self.tableView.endUpdates()
-                
             }
-                
-        
-        
         }
     }
     
@@ -135,14 +144,10 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
         else {
             navigationController?.popViewController(animated: true)
         }
-        
     }
-    
 
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
-    
-    
     }
     
     
@@ -153,18 +158,13 @@ class ToDoDetailTableViewController: UITableViewController, UITextFieldDelegate 
     @IBAction func datePickerChanged(_ sender: UIDatePicker) {
         self.view.endEditing(true)
         dateLabel.text = dateFormatter.string(from: sender.date)
-        
     }
+    
     
     @IBAction func textFieldEditingChanged(_ sender: UITextField) {
-        enableDisableSaveButton(text: sender.text!)
         
+        enableDisableSaveButton(text: sender.text!)
     }
-    
-
-    
-
-    
     
 }
 
@@ -173,7 +173,11 @@ extension ToDoDetailTableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath {
         case datePickerIndexPath:
-            return reminderSwitch.isOn ? datePicker.frame.height : 0
+            if #available(iOS 14.0, *) {
+                return 0
+            } else {
+                return reminderSwitch.isOn ? datePicker.frame.height : 0
+            }
         case notesTextViewIndexPath:
             return notesRowHeight
         default:
